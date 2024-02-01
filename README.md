@@ -8,10 +8,55 @@ If you need it for commercial usage, feel free to contact me and it's only $1 pe
 
 ## Quickstart
 
-Run:
+1. Copy `config.yaml.example` to `config.yaml`
+
+2. Run script
 
 ```bash
 go run main.go
+```
+
+The server will start default with binding IP 0.0.0.0 and port 14119 with following logs:
+
+```bash
+$ go run main.go
+
+INF Config file 'config.yaml'
+Start server: 0.0.0.0:14119
+```
+
+3. Access URL http://localhost:14119/test/users and get the response
+
+```json
+[
+  {
+    "Age": "32",
+    "Country": "United States",
+    "Date": "15/10/2017",
+    "First Name": "Dulce",
+    "Gender": "Female",
+    "Id": "1562",
+    "Last Name": "Abril"
+  },
+  {
+    "Age": "25",
+    "Country": "Great Britain",
+    "Date": "16/08/2016",
+    "First Name": "Mara",
+    "Gender": "Female",
+    "Id": "1582",
+    "Last Name": "Hashimoto"
+  },
+  {
+    "Age": "36",
+    "Country": "France",
+    "Date": "21/05/2015",
+    "First Name": "Philip",
+    "Gender": "Male",
+    "Id": "2587",
+    "Last Name": "Gent"
+  }
+]
 ```
 
 ## TODO
