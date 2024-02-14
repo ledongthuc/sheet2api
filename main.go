@@ -9,8 +9,10 @@ import (
 	"os"
 	"time"
 
+	"github.com/imkira/go-ttlmap"
 	"github.com/ironstar-io/chizerolog"
 	"github.com/ledongthuc/goterators"
+	"github.com/ledongthuc/sheet2api/cache"
 	"github.com/ledongthuc/sheet2api/configs"
 	"github.com/ledongthuc/sheet2api/core"
 	"github.com/rs/zerolog"
@@ -45,23 +47,47 @@ func main() {
 
 		fileConfig, _, err := goterators.Find(cs.Files, func(item configs.File) bool { return item.URLReplacedName == fileName })
 		if err != nil {
-			http.Error(w, fmt.Sprintf("'%s' doesn't exist", fileName), 404)
+			http.Error(w, fmt.Sprintf("'%s' doesn't exist", fileName), http.StatusNotFound)
+			return
+		}
+
+		cacheKey := fmt.Sprintf("/%s/%s", fileName, sheetName)
+		if fileConfig.IsEnableCache() {
+			cacheValue, err := cache.M.Get(cacheKey)
+			if err == nil {
+				log.Info().Msgf("'%s' hit cache", cacheKey)
+				w.Write(cacheValue.Value().([]byte))
+				return
+			}
+		}
+
+		if err != nil && (errors.Is(err, ttlmap.ErrNotExist) || errors.Is(err, ttlmap.ErrDrained)) {
+			http.Error(w, fmt.Sprintf("Fail to load cache: %s", err.Error()), http.StatusInternalServerError)
 			return
 		}
 
 		result, err := core.GetRows(fileConfig.FilePath, sheetName)
 		if err != nil {
 			if errors.As(err, &excelize.ErrSheetNotExist{SheetName: sheetName}) {
-				http.Error(w, fmt.Sprintf("Sheet '%s' doesn't exist", sheetName), 404)
+				http.Error(w, fmt.Sprintf("Sheet '%s' doesn't exist", sheetName), http.StatusNotFound)
 			} else {
-				http.Error(w, err.Error(), 500)
+				http.Error(w, fmt.Sprintf("Fail to get row: %s", err.Error()), http.StatusInternalServerError)
 			}
 			return
 		}
 
 		j, err := json.Marshal(result)
 		if err != nil {
-			http.Error(w, fmt.Sprintf("unmarshal response: %s", err.Error()), 500)
+			http.Error(w, fmt.Sprintf("unmarshal response: %s", err.Error()), http.StatusInternalServerError)
+			return
+		}
+
+		if fileConfig.IsEnableCache() {
+			item := ttlmap.NewItem(j, ttlmap.WithTTL(time.Duration(fileConfig.CacheInSecond)*time.Second))
+			if err := cache.M.Set(cacheKey, item, nil); err != nil {
+				http.Error(w, fmt.Sprintf("Fail to save cache: %s", err.Error()), http.StatusInternalServerError)
+				return
+			}
 		}
 
 		w.Write(j)

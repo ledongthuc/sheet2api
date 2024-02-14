@@ -7,6 +7,8 @@ github.com/go-chi/chi v1.5.5/go.mod h1:C9JqLr3tIYjDOZpzn+BCuxY8z8vmca43EeMgyZt7i
 github.com/go-chi/chi/v5 v5.0.11 h1:BnpYbFZ3T3S1WMpD79r7R5ThWX40TaFB7L31Y8xqSwA=
 github.com/go-chi/chi/v5 v5.0.11/go.mod h1:DslCQbL2OYiznFReuXYUmQ2hGd1aDpCnlMNITLSKoi8=
 github.com/godbus/dbus/v5 v5.0.4/go.mod h1:xhWf0FNVPg57R7Z0UbKHbJfkEywrmjJnf7w5xrFpKfA=
+github.com/imkira/go-ttlmap v2.0.0+incompatible h1:U0HKc010vF8qEQY4pvmZ7QLRSOpV4i87DKRngNHsqb0=
+github.com/imkira/go-ttlmap v2.0.0+incompatible/go.mod h1:O+nQkEb7vlapbVn5HZ3m4FItjV+qNG3GY9W/sb3l7aw=
 github.com/ironstar-io/chizerolog v0.0.0-20190729084312-7eaca6bf60e6 h1:0BI5Gn2H86dysH9rSWSoH+asSzSOGdMdM8m7mwrjE2Y=
 github.com/ironstar-io/chizerolog v0.0.0-20190729084312-7eaca6bf60e6/go.mod h1:8e99l1wwU8ZTrE0V/Myxr7KswMkrYyasoz4tLqLsuFQ=
 github.com/ledongthuc/goterators v1.0.2 h1:/tbqAMlCYGzeAoBsfiOrO1NJWBzGWhs8gqVc4uJfA/g=

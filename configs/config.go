@@ -16,6 +16,11 @@ type Config struct {
 type File struct {
 	FilePath        string `yaml:"file_path"`
 	URLReplacedName string `yaml:"api_replaced_name"`
+	CacheInSecond   int64  `yaml:"cache_in_second"` // <=0 means disabled
+}
+
+func (f *File) IsEnableCache() bool {
+	return f.CacheInSecond > 0
 }
 
 func LoadConfigFile(filePath string) (*Config, error) {

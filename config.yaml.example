@@ -4,5 +4,6 @@ files: [
   {
     file_path: "./test/users_test.xlsx",
     api_replaced_name: "test",
+    cache_in_second: 0,
   },
 ]

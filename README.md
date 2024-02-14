@@ -63,3 +63,5 @@ Start server: 0.0.0.0:14119
 
  - Support sheet files content caching
  - Support sheet column name/API response key replaced name
+ - Rename package to SheetFetch
+ - Document config
